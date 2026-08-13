@@ -28,13 +28,12 @@ jobs:
       run: gradle assembleRelease
 
     - name: Firmar APK con la clave
-      uses: rExecutable/android-sign-action@v1.2.0
+      uses: r3ne1/build-signed-apk@v1
       with:
-        releaseDirectory: app/build/outputs/apk/release
-        signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+        keystore_base64: ${{ secrets.KEYSTORE_BASE64 }}
         alias: ${{ secrets.KEY_ALIAS }}
-        keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+        keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
+        key_password: ${{ secrets.KEYSTORE_PASSWORD }}
 
     - name: Guardar APK Firmado
       uses: actions/upload-artifact@v4
