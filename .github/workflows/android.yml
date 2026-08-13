@@ -1,4 +1,4 @@
-name: Build and Sign Android APK
+name: Build, Sign and Release Android APK
 
 on:
   push:
@@ -7,6 +7,9 @@ on:
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs='-Xmx4096m -XX:+UseParallelGC'"
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -40,8 +43,21 @@ jobs:
         APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
         $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --out surf-malaga.apk $APK_PATH
 
-    - name: Guardar APK Firmado
+    - name: Guardar APK como Artefacto
       uses: actions/upload-artifact@v4
       with:
         name: Surf-Malaga-Signed-APK
         path: surf-malaga.apk
+
+    - name: Crear GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        name: Release v1.0.${{ github.run_number }}
+        body: |
+          🚀 Nueva versión compilada y firmada automáticamente.
+          
+          **Archivo:** `surf-malaga.apk`
+        files: surf-malaga.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
