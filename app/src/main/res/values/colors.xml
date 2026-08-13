@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="accent">#00ACC1</color>
+    <color name="background">#F5F7FA</color>
+    <color name="white">#FFFFFF</color>
+    <color name="error">#D32F2F</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+
+    <!-- Colores de ola según altura -->
+    <color name="wave_flat">#9E9E9E</color>
+    <color name="wave_small">#4CAF50</color>
+    <color name="wave_medium">#FF9800</color>
+    <color name="wave_big">#F44336</color>
+
+    <!-- Gráfica -->
+    <color name="wave_blue">#1E88E5</color>
+    <color name="wind_green">#43A047</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Surf Málaga</string>
+    <string name="action_alerts">Alertas</string>
+    <string name="refresh">Actualizar</string>
+    <string name="loading">Cargando datos…</string>
+    <string name="error_network">Error de red. Comprueba tu conexión.</string>
+    <string name="alerts_saved">Alertas guardadas</string>
+</resources>
