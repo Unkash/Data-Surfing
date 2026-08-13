@@ -32,3 +32,46 @@ jobs:
       with:
         name: Data-Surfing-APK
         path: app/build/outputs/apk/debug/app-debug.apk
+name: Build and Sign Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar codigo
+      uses: actions/checkout@v4
+
+    - name: Configurar Java 21 (LTS)
+      uses: actions/setup-java@v5
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Configurar Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.5'
+
+    - name: Compilar APK Release
+      run: gradle assembleRelease
+
+    - name: Firmar APK con la clave
+      uses: rExecutable/android-sign-action@v1.2.0
+      with:
+        releaseDirectory: app/build/outputs/apk/release
+        signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+        alias: ${{ secrets.KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+        keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+
+    - name: Guardar APK Firmado
+      uses: actions/upload-artifact@v4
+      with:
+        name: Data-Surfing-Signed-APK
+        path: app/build/outputs/apk/release/*.apk
