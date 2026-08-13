@@ -27,16 +27,18 @@ jobs:
     - name: Compilar APK Release
       run: gradle assembleRelease
 
-    - name: Firmar APK con la clave
-      uses: r3ne1/build-signed-apk@v1
-      with:
-        keystore_base64: ${{ secrets.KEYSTORE_BASE64 }}
-        alias: ${{ secrets.KEY_ALIAS }}
-        keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
-        key_password: ${{ secrets.KEYSTORE_PASSWORD }}
+    - name: Decodificar archivo Keystore desde Secrets
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.p12
+
+    - name: Firmar APK con apksigner (Herramienta oficial de Android)
+      run: |
+        BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
+        APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
+        $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --out app-signed.apk $APK_PATH
 
     - name: Guardar APK Firmado
       uses: actions/upload-artifact@v4
       with:
         name: Data-Surfing-Signed-APK
-        path: app/build/outputs/apk/release/*.apk
+        path: app-signed.apk
