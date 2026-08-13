@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  # Le asignamos 4GB de RAM a Gradle y optimizamos la recolección de basura
   GRADLE_OPTS: "-Dorg.gradle.jvmargs='-Xmx4096m -XX:+UseParallelGC'"
 
 jobs:
@@ -39,7 +38,7 @@ jobs:
       run: |
         BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
         APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
-        $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --out app-signed.apk $APK_PATH
+        $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --out app-signed.apk $APK_PATH
 
     - name: Guardar APK Firmado
       uses: actions/upload-artifact@v4
