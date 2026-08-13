@@ -38,10 +38,10 @@ jobs:
       run: |
         BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
         APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
-        $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --out app-signed.apk $APK_PATH
+        $BUILD_TOOLS_DIR/apksigner sign --ks release.p12 --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --out surf-malaga.apk $APK_PATH
 
     - name: Guardar APK Firmado
       uses: actions/upload-artifact@v4
       with:
-        name: Data-Surfing-Signed-APK
-        path: app-signed.apk
+        name: Surf-Malaga-Signed-APK
+        path: surf-malaga.apk
