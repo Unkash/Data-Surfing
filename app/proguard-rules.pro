@@ -1,0 +1,5 @@
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+-keep class com.github.mikephil.charting.** { *; }
+-keep class org.osmdroid.** { *; }
+-keep class org.json.** { *; }
