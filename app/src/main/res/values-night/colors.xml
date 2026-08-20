@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#121212</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#BBBBBB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="primary">#1E88E5</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="wave_blue">#42A5F5</color>
+    <color name="wind_green">#66BB6A</color>
+    <color name="wave_small">#66BB6A</color>
+    <color name="wave_medium">#FFA726</color>
+    <color name="wave_big">#EF5350</color>
+    <color name="wave_flat">#BDBDBD</color>
+    <color name="error">#EF5350</color>
+</resources>

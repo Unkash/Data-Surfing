@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            android:titleTextColor="@color/white"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <ProgressBar android:id="@+id/progressBar"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:visibility="gone"/>
+
+            <TextView android:id="@+id/tvError"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="@color/error" android:visibility="gone" android:padding="8dp"/>
+
+            <!-- Bandera del Ayuntamiento de Málaga -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBandera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🏖 Estado de baño"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvBanderaEstado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvBanderaHora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRefreshBandera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔄 Actualizar bandera"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    <!-- Debug: muestra respuesta raw del WS, ocultar en producción -->
+                    <TextView
+                        android:id="@+id/tvBanderaDebug"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="10sp"
+                        
+                        android:fontFamily="monospace"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Condiciones actuales -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCurrent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" android:visibility="gone"
+                app:cardCornerRadius="12dp" app:cardElevation="4dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+
+                    <!-- Indicadores offshore y swell -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="12dp">
+                        <TextView android:id="@+id/tvOffshoreIndicator"
+                            android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:textSize="13sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tvSwellIndicator"
+                            android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:textSize="13sp" android:textStyle="bold"
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                    <!-- OLAS -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="🌊 OLAS" android:textSize="11sp" android:textStyle="bold"
+                         android:layout_marginBottom="4dp"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="10dp">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Altura" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWaveHeight" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="@color/wave_blue"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Período" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWavePeriod" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Dirección" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWaveDir" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- SWELL -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="↗ SWELL" android:textSize="11sp" android:textStyle="bold"
+                         android:layout_marginBottom="4dp"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="10dp">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Altura" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvSwellHeight" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="@color/wave_blue"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Período" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvSwellPeriod" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Dirección" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvSwellDir" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- VIENTO -->
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="💨 VIENTO" android:textSize="11sp" android:textStyle="bold"
+                         android:layout_marginBottom="4dp"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Velocidad" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWindSpeed" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="@color/wind_green"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Rachas" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWindGusts" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Dirección" android:textSize="11sp" />
+                            <TextView android:id="@+id/tvWindDir" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold"
+                                android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:id="@+id/tvLastUpdate"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:textSize="11sp"  android:gravity="end"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Gráfica -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardChart"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" android:visibility="gone"
+                app:cardCornerRadius="12dp" app:cardElevation="4dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="12dp">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="📈 Previsión 48h" android:textSize="15sp" android:textStyle="bold"
+                        android:textColor="@color/primary" android:layout_marginBottom="8dp"/>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent" android:layout_height="200dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnWebcam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📷 Ver webcam en directo"
+                android:layout_marginBottom="8dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRefresh"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="🔄 Actualizar" android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
