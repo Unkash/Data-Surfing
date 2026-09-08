@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvDownloadStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciando descarga..."
+        android:textSize="13sp"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+    <ProgressBar
+        android:id="@+id/downloadProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnInstall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📲 Instalar ahora"
+        android:visibility="gone"/>
+
+</LinearLayout>
