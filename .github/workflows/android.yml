@@ -1,0 +1,91 @@
+name: Build, Sign and Release Android APK
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+env:
+  GRADLE_OPTS: "-Dorg.gradle.jvmargs='-Xmx4096m -XX:+UseParallelGC'"
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Descargar codigo
+      uses: actions/checkout@v4
+
+    - name: Configurar Java 21 (LTS)
+      uses: actions/setup-java@v5
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Configurar Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.5'
+
+    - name: Obtener versión del app
+      id: version
+      run: |
+        VERSION=$(grep versionName app/build.gradle | head -1 | tr -d ' ' | cut -d'"' -f2)
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Versión detectada: $VERSION"
+
+    - name: Compilar APK Release
+      run: gradle assembleRelease --no-daemon
+
+    - name: Decodificar archivo Keystore desde Secrets
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.p12
+
+    - name: Firmar APK con apksigner
+      run: |
+        BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
+        APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
+        $BUILD_TOOLS_DIR/apksigner sign \
+          --ks release.p12 \
+          --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" \
+          --out SurfMalaga-v${{ steps.version.outputs.VERSION }}.apk \
+          $APK_PATH
+
+    - name: Generar version.json
+      run: |
+        cat > version.json << JSONEOF
+        {
+          "version": "${{ steps.version.outputs.VERSION }}",
+          "apk_url": "https://github.com/Unkash/Data-Surfing/releases/download/v${{ steps.version.outputs.VERSION }}/SurfMalaga-v${{ steps.version.outputs.VERSION }}.apk"
+        }
+        JSONEOF
+        cat version.json
+
+    - name: Publicar version.json en rama main
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add version.json
+        git diff --staged --quiet || git commit -m "chore: update version.json to v${{ steps.version.outputs.VERSION }}"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Guardar APK como Artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: SurfMalaga-v${{ steps.version.outputs.VERSION }}
+        path: SurfMalaga-v${{ steps.version.outputs.VERSION }}.apk
+
+    - name: Crear GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.version.outputs.VERSION }}
+        name: Surf Málaga v${{ steps.version.outputs.VERSION }}
+        body: |
+          🏄 Surf Málaga v${{ steps.version.outputs.VERSION }}
+
+          **Descarga e instala el APK en tu Android.**
+        files: |
+          SurfMalaga-v${{ steps.version.outputs.VERSION }}.apk
+          version.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
