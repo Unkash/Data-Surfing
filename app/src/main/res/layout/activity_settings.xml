@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="?android:attr/colorBackground"
+    android:padding="16dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="🌙 Tema de la aplicación" android:textStyle="bold"
+                android:textSize="15sp" android:layout_marginBottom="12dp"
+                android:textColor="@color/primary"/>
+
+            <RadioGroup android:id="@+id/rgTheme"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                <RadioButton android:id="@+id/rbAuto"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="🔄 Automático (según el sistema)"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioButton android:id="@+id/rbLight"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="☀️ Claro"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioButton android:id="@+id/rbDark"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="🌑 Oscuro"/>
+            </RadioGroup>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

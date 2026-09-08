@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Surf Málaga</string>
+    <string name="action_alerts">Alertas</string>
+    <string name="action_map">Mapa</string>
+    <string name="action_spot_alert">Alerta este spot</string>
+</resources>
